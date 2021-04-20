@@ -2,8 +2,8 @@ require('dotenv').config();
 import express from 'express';
 import env from './environment';
 import db from './models';
-import schema from './schema/schema';
-import {graphqlHTTP} from 'express-graphql';
+import schema from './schema';
+import { graphqlHTTP } from 'express-graphql';
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
     if (env.SYNC_DB === 'true') {
         await db.functions.syncDatabase();
     }
-    if (env.SEED_DB  === 'true') {
+    if (env.SEED_DB === 'true') {
         await db.functions.seedDatabase();
     }
 
@@ -19,7 +19,7 @@ const port = process.env.PORT || 3000;
     // bind express with graphql
     app.use('/graphql', graphqlHTTP({
         schema,
-        graphiql: true
+        graphiql: true, 
     }));
 
     app.listen(port, () => {
