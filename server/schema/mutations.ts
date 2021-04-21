@@ -6,7 +6,7 @@ const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
         register: {
-            type: UserSchema,
+            type: LoginResultSchema,
             args: {
                 firstName: { type: new GraphQLNonNull(GraphQLString) },
                 lastName: { type: new GraphQLNonNull(GraphQLString) },

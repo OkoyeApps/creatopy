@@ -19,9 +19,10 @@ module.exports = (sequelize: Sequelize) => {
     createdBy! : string;
     static associate(models: any) {
       // define association here
-      Project.belongsToMany(models.User, {
-        through: 'ProjectAssignments'
-      });
+      // Project.belongsToMany(models.User, {
+      //   through: 'ProjectAssignments'
+      // });
+      // Project.hasMany(models.ProjectAssignment);
     }
   };
   Project.init({

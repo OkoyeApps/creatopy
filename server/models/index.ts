@@ -63,6 +63,13 @@ const syncDatabase = async () => {
   await sequelize.sync({ force: true });
 };
 
+db.User.belongsToMany(db.Project, {through: db.ProjectAssignment})
+db.Project.belongsToMany(db.User, {through: db.ProjectAssignment})
+db.User.hasMany(db.ProjectAssignment);
+db.ProjectAssignment.belongsTo(db.User);
+db.Project.hasMany(db.ProjectAssignment);
+db.ProjectAssignment.belongsTo(db.Project);
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.functions = { seedDatabase, syncDatabase };

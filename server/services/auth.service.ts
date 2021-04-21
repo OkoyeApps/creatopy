@@ -15,7 +15,11 @@ type RegistrationDto = AuthenticateDto & {
 class AuthServices {
 
     async register(data: RegistrationDto) {
-        return await db.User.create(data);
+        let result = await db.User.create(data);
+        // if (result) {
+            return this.login({ email: data.email, password: data.password });
+        // }
+
     }
 
     async login(data: AuthenticateDto) {

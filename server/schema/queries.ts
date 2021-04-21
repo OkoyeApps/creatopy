@@ -28,7 +28,7 @@ const RootQuery = new GraphQLObjectType({
         projects: {
             type: new GraphQLList(ProjectSchema),
             async resolve(parent, args, context) {
-                console.log("context check", context.locals);
+                // console.log("context check", context.locals);
                 return await projectServices.getAllProjectsWithUsers();
             }
         },

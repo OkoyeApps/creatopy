@@ -1,7 +1,7 @@
 import db from '../models';
 import { Op } from 'sequelize';
 import AppError from '../lib/appError';
-const { User, Project, ProjectAssignment } = db;
+const { User, Project } = db;
 
 type createProjectDto = {
     title: string;
@@ -42,14 +42,7 @@ class ProjectServices {
     }
 
     async getMyProjects(userId: string) {
-    //     let aa = await ProjectAssignment.findAll({where : {UserId: userId, 
-    //         include : {
-    //         model : Project
-    //     }
-    // }})
-        // console.log(aa);
-
-       return  Project.findAll({
+        return Project.findAll({
             include: {
                 model: User,
                 where: {
@@ -59,7 +52,12 @@ class ProjectServices {
                 },
                 include: {
                     model: Project,
-                   
+                    where: {
+                        id: {
+                            [Op.ne]: userId
+                        }
+                    },
+                    include: { model: User}
                 }
             }
         });
