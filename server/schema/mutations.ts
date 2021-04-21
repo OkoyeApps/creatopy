@@ -1,6 +1,6 @@
-import { GraphQLObjectType, GraphQLNonNull, GraphQLString } from 'graphql';
-import { UserSchema, LoginResultSchema } from './schema';
-import { authServices } from '../services';
+import { GraphQLObjectType, GraphQLNonNull, GraphQLString, GraphQLID } from 'graphql';
+import { UserSchema, LoginResultSchema, ProjectSchema } from './schema';
+import { authServices, projectServices, userServices } from '../services';
 
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
@@ -32,6 +32,31 @@ const Mutation = new GraphQLObjectType({
                 return await authServices.login({
                     password: args.password, email: args.email
                 });
+            }
+        },
+        createProject: {
+            type: ProjectSchema,
+            args: {
+                title: { type: new GraphQLNonNull(GraphQLString) },
+                description: { type: new GraphQLNonNull(GraphQLString) },
+                createdBy: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            async resolve(parent, args) {
+                return await projectServices.createProject({
+                    title: args.title,
+                    description: args.description,
+                    createdBy: args.createdBy
+                });
+            }
+        },
+        joinProject: {
+            type: ProjectSchema,
+            args: {
+                projectId: { type: new GraphQLNonNull(GraphQLID) },
+                userId: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            async resolve(parent, args) {
+                return await projectServices.joinProject(args.projectId, args.userId);
             }
         }
     }

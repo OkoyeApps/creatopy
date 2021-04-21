@@ -12,6 +12,8 @@ module.exports = (sequelize: Sequelize) => {
     ProjectId!: number;
     static associate(models: any) {
       // define association here
+      ProjectAssignment.belongsToMany(models.User, {through : 'ProjectAssignments'});
+      ProjectAssignment.belongsToMany(models.Project, {through : 'ProjectAssignments'});
     }
   };
   ProjectAssignment.init({

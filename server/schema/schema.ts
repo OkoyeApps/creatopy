@@ -26,6 +26,8 @@ export const ProjectSchema: GraphQLObjectType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         title: { type: GraphQLString },
+        description: { type: GraphQLString },
+        createdBy : {type : GraphQLString},
         Users: {
             type: new GraphQLList(UserSchema),
             async resolve(parent, args) {

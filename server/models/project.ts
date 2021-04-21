@@ -6,6 +6,8 @@ interface ProjectAttributes {
   id: number;
   title: string;
   status: boolean | null;
+  description : string;
+  createdBy : string;
 }
 
 module.exports = (sequelize: Sequelize) => {
@@ -13,6 +15,8 @@ module.exports = (sequelize: Sequelize) => {
     id!: number;
     title!: string;
     status!: boolean;
+    description! : string;
+    createdBy! : string;
     static associate(models: any) {
       // define association here
       Project.belongsToMany(models.User, {
@@ -27,7 +31,9 @@ module.exports = (sequelize: Sequelize) => {
       primaryKey: true, autoIncrement: true
     },
     title: DataTypes.STRING(50),
-    status: { type: DataTypes.BOOLEAN, allowNull: true }
+    status: { type: DataTypes.BOOLEAN, allowNull: true },
+    description : {type: DataTypes.TEXT, allowNull: false},
+    createdBy : {type: DataTypes.STRING(50), allowNull: false},
   }, {
     sequelize,
     modelName: 'Project',
