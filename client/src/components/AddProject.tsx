@@ -29,11 +29,11 @@ const AddProject = () => {
         <form id="add-book" onSubmit={submitForm} >
             <div className="field">
                 <label>Title:</label>
-                <input type="text" onChange={(e) => handleChange({ name: e.target.value })} />
+                <input type="text" className="form-control" onChange={(e) => handleChange({ name: e.target.value })} />
             </div>
             <div className="field">
                 <label>Description:</label>
-                <textarea rows={3} cols={3} onChange={handleChange}></textarea>
+                <textarea className="form-control" rows={3} cols={3} onChange={handleChange}></textarea>
             </div>
             <button>+</button>
         </form>

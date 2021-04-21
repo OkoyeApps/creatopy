@@ -10,21 +10,20 @@ import { Projects } from '../types';
 
 
 const MyProjectList = () => {
-    const { loading, error, data } = useQuery(getPersonalProjects, {variables : {id : 1}});
+    const { loading, error, data } = useQuery(getPersonalProjects);
     const [singleProject, setSingleProject] = useState<Projects>();
-    console.log("personal", data, error, )
 
     const displayProjects = () => {
-        let projectArray = data.openProjects as Projects[];
+        let projectArray = data.myProjects as Projects[];
         return projectArray.map((project, i) => {
             return (
-                <li key={"project_open_" + i}  onClick={(e) => setSingleProject(project)}>
+                <li key={"project_open_" + i} onClick={(e) => setSingleProject(project)}>
                     <div className="project-content">
                         {project.title}
                         <i className="fas fa-user-circle fa-lg user-icon"><span>{project.Users.length}</span></i>
                     </div>
                     <div className="overlay">
-                        <div className="text">Join</div>
+                        <div className="text">View</div>
                     </div>
                 </li>
             );

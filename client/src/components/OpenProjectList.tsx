@@ -12,7 +12,6 @@ import { Projects } from '../types';
 const OpenProjectList = () => {
     const { loading, error, data } = useQuery(getOpenProjects);
     const [singleProject, setSingleProject] = useState<Projects>();
-    console.log("open project", data, error, )
 
     const displayProjects = () => {
         let projectArray = data.openProjects as Projects[];

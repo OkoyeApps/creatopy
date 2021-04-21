@@ -26,20 +26,40 @@ export const getOpenProjects = gql`
          }
        }
  }
-`
+`;
 
 export const getPersonalProjects = gql`
-query getProjects($id : string) {
-    project (id: $id) {
-        title
-        description
-        createdBy
-        id
-        Users {
+query  {
+  myProjects {
+    id
+    title
+    description
+    createdBy
+      Users {
           lastName
           firstName
+          lastName
           id
-        }
+          email
+            projects {
+              id
+              title
+              description
+              createdBy
+                Users {
+                  firstName
+                  lastName
+                  id
+                  email
+                      projects {
+                        id
+                        title
+                        description
+                        createdBy
+                      }
+                }
+           }
     }
+  }
 }
 `;
