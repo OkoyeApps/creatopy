@@ -13,9 +13,9 @@ query {
  }    
 `;
 
-export const getOpenProjects = gql`
+export const GETOPENPROJECTS = gql`
  query {
-    openProjects {
+  projects {
         title
         description
         createdBy
@@ -63,3 +63,47 @@ query  {
   }
 }
 `;
+
+export const CREATEPROJECT = gql`
+  mutation CreateProject($title : String!, $description : String!) {
+    createProject(title : $title, description  : $description){
+      id
+    title
+    description
+    createdBy
+    Users {
+       id
+    }
+    }
+  }
+`;
+export const JOINPROJECT = gql`
+  mutation JoinProject($projectId : ID!) {
+    joinProject(projectId : $projectId){
+      id
+    title
+    description
+    createdBy
+    Users {
+       id
+    }
+    }
+  }
+`;
+
+export const GETSINGLEPROJECT = gql`
+ query ($id : ID!){ 
+   project (id : $id) {
+    id
+    title
+    description
+    createdBy
+    Users {
+       id
+       firstName
+       lastName
+       email
+    }
+   }
+ }
+`

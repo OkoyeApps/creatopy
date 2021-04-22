@@ -1,4 +1,4 @@
-export type Projects = {
+export type Project = {
     title?: string;
     description?: string;
     id?: number;
@@ -12,7 +12,7 @@ type UserType = {
     lastName?: string;
     id?: string;
     email?: string;
-    Projects?: Projects;
+    Projects?: Project;
 };
 
 export type RegistrationType = {
@@ -22,9 +22,22 @@ export type RegistrationType = {
     password: string;
 };
 
-//  Record<string, string> 
-
 export type LoginType = {
     email: string;
     password: string;
 };
+
+export type LoginResponse = {
+    access_token: string;
+    authDetail: {
+        firstName?: string;
+        lastName?: string;
+        id?: string;
+        email?: string;
+    };
+};
+
+export type CreateProject = {
+    title : string;
+    description: string;
+}

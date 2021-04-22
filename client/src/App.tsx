@@ -1,24 +1,28 @@
-
-// components
 import OpenProjectList from './components/OpenProjectList';
 import AddProject from './components/AddProject';
 import MyProjectList from './components/MyProjectList';
 import Modal from './components/Modal';
+import { useAppSelector } from './store/store.hook';
+import { RootState } from './store/store';
 
 
-const App = () => {
+const App = (props: any) => {
+  const { access_token } = useAppSelector((state: RootState) => state.authentication);
 
+  if (!access_token || access_token === '') return <Modal />;
   
   return (
-    <div id="main">
-      <Modal/>
-      <h1>Open Source Projects</h1>
-      <OpenProjectList />
-      <hr />
-      <h1>My Projects</h1>
-      <MyProjectList />
+    <>
+      <div id="main">
+
+        <h1>Public Projects</h1>
+        <OpenProjectList />
+        <hr />
+
+        {access_token && <MyProjectList />}
+      </div>
       <AddProject />
-    </div>
+    </>
   );
 };
 

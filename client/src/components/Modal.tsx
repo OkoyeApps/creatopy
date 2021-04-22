@@ -2,12 +2,15 @@ import { useState } from 'react';
 import { LoginType, RegistrationType } from '../types';
 import { REGISTER, LOGIN } from '../queries/auth.queries';
 import { useMutation } from '@apollo/client';
+import {signInSuccess,registrationSuccess} from '../store/authSlice';
+import {useAppDispatch} from '../store/store.hook';
 
 const Modal = () => {
     const [registrationData, setRegistrationData] = useState<Record<string, string>>();
     const [loginData, setLoginData] = useState<Record<string, string>>();
-    const [register, { data }] = useMutation(REGISTER);
-    const [login, { data: loginResult }] = useMutation(LOGIN);
+    const [register, ] = useMutation(REGISTER);
+    const [login,] = useMutation(LOGIN);
+    const dispatch = useAppDispatch();
 
     const handleRegistrationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setRegistrationData({
@@ -42,6 +45,8 @@ const Modal = () => {
 
                 if (result && result.data && result.data.register) {
                     localStorage.setItem("auth_detail", JSON.stringify(result.data.register));
+                    dispatch(registrationSuccess(result.data.register));
+
                 }
             }
         } catch (error) {
@@ -65,6 +70,7 @@ const Modal = () => {
             });
             if (result && result.data && result.data.login) {
                 localStorage.setItem("auth_detail", JSON.stringify(result.data.login));
+                dispatch(signInSuccess(result.data.login));
             }
         }
     };

@@ -1,26 +1,29 @@
 // components
-import ProjectDetails from './ProjectDetails';
-import { useQuery } from '@apollo/client';
-import { useState, } from 'react';
+import { useQuery, useMutation } from '@apollo/client';
 
 //queries
-import { getOpenProjects } from '../queries/project.queries';
-import { Projects } from '../types';
+import { GETOPENPROJECTS, JOINPROJECT, getPersonalProjects } from '../queries/project.queries';
+import { Project } from '../types';
 
-
+interface ProjectQuery {
+    projects: Project[];
+}
 
 const OpenProjectList = () => {
-    const { loading, error, data } = useQuery(getOpenProjects);
-    const [singleProject, setSingleProject] = useState<Projects>();
-
+    const { loading, data } = useQuery<ProjectQuery>(GETOPENPROJECTS);
+    const [joinProject] = useMutation(JOINPROJECT, {
+        refetchQueries:
+            [{ query: getPersonalProjects },
+            { query: GETOPENPROJECTS }]
+    });
     const displayProjects = () => {
-        let projectArray = data.openProjects as Projects[];
-        return projectArray.map((project, i) => {
+        let projectArray = data?.projects;
+        return projectArray && projectArray.map((project: any, i: number) => {
+            let id = (project.id as any) as string;
             return (
-                <li key={"project_open_" + i}  onClick={(e) => setSingleProject(project)}>
+                <li key={"project_open_" + i} onClick={(e) => joinProject({ variables: { projectId: id } })}>
                     <div className="project-content">
                         {project.title}
-                        <i className="fas fa-user-circle fa-lg user-icon"><span>{project.Users.length}</span></i>
                     </div>
                     <div className="overlay">
                         <div className="text">Join</div>
@@ -29,16 +32,14 @@ const OpenProjectList = () => {
             );
         });
     };
+    if (loading) return <h4>Fetching projects...</h4>;
     return (
         <div>
             <ul id="book-list">
                 {
-                    (!loading && data) ? displayProjects() : <h4>Fetching projects...</h4>
+                    (data && data.projects) ? displayProjects() : <h4>No open projects currently, you can use the form below to create one</h4>
                 }
             </ul>
-            {
-                singleProject && <ProjectDetails project={singleProject} />
-            }
         </div>
     );
 };

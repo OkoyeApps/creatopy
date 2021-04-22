@@ -1,39 +1,51 @@
-import React, { useState } from 'react';
-
-
-interface StateProps {
-    name: string,
-    genre: string,
-    authorId: string;
-}
-
+import { useState } from 'react';
+import { CREATEPROJECT, getPersonalProjects, GETOPENPROJECTS} from '../queries/project.queries';
+import { useMutation } from '@apollo/client';
+import { CreateProject } from '../types';
 const AddProject = () => {
-    const [formValues, setFormValues] = useState<StateProps>();
+    const [formValues, setFormValues] = useState<Record<string, string>>();
+    const [createProject, ] = useMutation(CREATEPROJECT, {refetchQueries : [{query : getPersonalProjects}, {query : GETOPENPROJECTS}]});
 
     const handleChange = (e: any) => {
-
+        setFormValues({
+            ...formValues, [e.target.name]: e.target.value
+        });
     };
-    const submitForm = (e: any) => {
+    const submitForm = async (e: any) => {
         e.preventDefault();
-        // use the addBookMutation
-        // this.props.addBookMutation({
-        //     variables: {
-        //         name: this.state.name,
-        //         genre: this.state.genre,
-        //         authorId: this.state.authorId
-        //     },
-        //     refetchQueries: [{ query: getBooksQuery }]
-        // });
+        try {
+            let dataToPost = formValues as Object;
+            if (!dataToPost ||
+                !dataToPost.hasOwnProperty("title")
+                || !dataToPost.hasOwnProperty("description")
+            ) {
+                return alert("please all fields are required");
+            } else {
+                let postData = dataToPost as CreateProject;
+                 await createProject({
+                    variables: {
+                        title: postData.title,
+                        description: postData.description
+                    }
+                });
+            }
+        } catch (error) {
+            alert("registration failed");
+            console.log(error);
+        }
     };
     return (
         <form id="add-book" onSubmit={submitForm} >
-            <div className="field">
-                <label>Title:</label>
-                <input type="text" className="form-control" onChange={(e) => handleChange({ name: e.target.value })} />
-            </div>
-            <div className="field">
-                <label>Description:</label>
-                <textarea className="form-control" rows={3} cols={3} onChange={handleChange}></textarea>
+            <div>
+                <div>
+                    <label>Title:</label>
+                    <input name="title" type="text" className="form-control" onChange={handleChange} />
+                </div>
+                <div className="txt_area_right">
+                    <label>Description:</label>
+                    <textarea name="description" className="form-control" rows={3} cols={3} onChange={handleChange}></textarea>
+
+                </div>
             </div>
             <button>+</button>
         </form>
