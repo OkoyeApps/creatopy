@@ -28,22 +28,21 @@ const RootQuery = new GraphQLObjectType({
         projects: {
             type: new GraphQLList(ProjectSchema),
             async resolve(parent, args, context) {
-                // console.log("context check", context.locals);
                 return await projectServices.getAllProjectsWithUsers();
             }
         },
         openProjects: {
             type: new GraphQLList(ProjectSchema),
             async resolve(parent, args, context) {
-                // console.log("context check", context.locals);
-                return await projectServices.getOpenProjects("b5818d3d-2d64-4b5e-b74e-1c09b12de401");
+                if (!context.locals || !context.locals.auth || !context.locals.auth.id) return null;
+                return await projectServices.getOpenProjects(context.locals.auth.id);
             }
         },
         myProjects: {
             type: new GraphQLList(ProjectSchema),
             async resolve(parent, args, context) {
-                // console.log("context check", context.locals);
-                return await projectServices.getMyProjects("a5e2372b-6e22-4abd-9a0d-4ca7595cd9b1");
+                if (!context.locals || !context.locals.auth || !context.locals.auth.id) return null;
+                return await projectServices.getMyProjects(context.locals.auth.id);
             }
         }
 

@@ -1,17 +1,21 @@
 import db from '../models';
 import { Op } from 'sequelize';
 import AppError from '../lib/appError';
-const { User, Project } = db;
+const { User, Project, ProjectAssignment } = db;
 
 type createProjectDto = {
     title: string;
     description: string;
     createdBy: string;
+    creatorId: string;
 };
 class ProjectServices {
 
     async createProject(data: createProjectDto) {
-        return await Project.create(data);
+        let user = await User.findByPk(data.creatorId);
+        let result = await Project.create({ ...(data as any), UserId: data.creatorId });
+        await result.addUser(user);
+        return result;
     }
 
     async getSingleProjectWithUsersById(id: number) {
@@ -21,7 +25,7 @@ class ProjectServices {
 
     async getAllProjectsWithUsers() {
         let result = await Project.findAll({ include: { model: User } });
-        return result;
+        return result.map((x : any)=>x.toJSON());
     }
     async joinProject(projectId: number, userId: string) {
         try {
@@ -31,9 +35,7 @@ class ProjectServices {
             let project = await Project.findByPk(projectId);
 
             if (!project) throw new AppError("project does not exist", "USER");
-            await user.addProjects(project);
-
-            return User.findOne({ where: { id: userId }, include: { model: Project } });
+            return await user.addProject(project);
         } catch (error) {
             if (error instanceof AppError) return error;
 
@@ -57,7 +59,7 @@ class ProjectServices {
                             [Op.ne]: userId
                         }
                     },
-                    include: { model: User}
+                    include: { model: User }
                 }
             }
         });
@@ -66,13 +68,18 @@ class ProjectServices {
     async getOpenProjects(userId: string) {
         try {
             let result = await Project.findAll({
-                include: {
-                    model: User, where: {
-                        id: {
-                            [Op.ne]: userId
+                include: [
+                    {
+                        model: ProjectAssignment,
+                        include: [User, Project]
+                    },
+                    {
+                        model: User,
+                        include: {
+                            model: Project,
                         }
                     }
-                }
+                ]
             });
             return result;
         } catch (error) {

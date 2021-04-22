@@ -5,13 +5,20 @@ import db from './models';
 import schema from './schema';
 import { graphqlHTTP } from 'express-graphql';
 import cors from 'cors';
+import cryptoUtil from './lib/crypto.util';
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
 
-app.use((req: any, res: Response, next: NextFunction) => {
-    req.locals = { auth: { userid: 1, firstName: "emmanuel" } };
+app.use(async (req: any, res: Response, next: NextFunction) => {
+    let authorization = req.headers.authorization;
+    if (authorization) {
+        let result = await cryptoUtil.verifyJwt((authorization as string).replace("Bearer ", ""));
+        if(result){
+            req.locals = { auth: { ...(result as any)} };
+        }
+    }
     next();
 });
 

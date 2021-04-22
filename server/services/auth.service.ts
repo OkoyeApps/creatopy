@@ -11,14 +11,19 @@ type RegistrationDto = AuthenticateDto & {
     lastName: string;
 };
 
+type ResetPasswordDto = { 
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+    userId : string;
+}
+
 
 class AuthServices {
 
     async register(data: RegistrationDto) {
         let result = await db.User.create(data);
-        // if (result) {
-            return this.login({ email: data.email, password: data.password });
-        // }
+        return this.login({ email: data.email, password: data.password });
 
     }
 
@@ -38,6 +43,20 @@ class AuthServices {
             return null;
         } catch (error) {
             return null;
+        }
+    }
+
+    async resetPassword(data : ResetPasswordDto ){
+        if(data.newPassword !== data.confirmPassword) return false;
+        let existingUser = await db.User.findByPk(data.userId);
+        if(!existingUser) return false;
+        if(existingUser){
+            let validPassword = await cryptoUtil.verifyHash(data.oldPassword, existingUser.password);
+            if (!validPassword) return false;
+            
+            existingUser.password  = await cryptoUtil.createStringHash(data.newPassword);
+            existingUser.save();
+            return true
         }
 
     }

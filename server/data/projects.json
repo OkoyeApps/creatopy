@@ -2,16 +2,19 @@
     {
         "title": "Styled Components",
         "description": "The server can use that header to authenticate the user and attach it to the GraphQL execution context, so resolvers can modify their behavior based on a user's role and permissions.",
-        "createdBy" : "Emmanuel"
+        "createdBy": "Emmanuel",
+        "creatorId": "5be06dfb-30fd-4352-88c0-11e5f7414acf"
     },
     {
         "title": "Check for bugs",
-        "description" : "Since Apollo caches all of your query results, it's important to get rid of them when the login state changes.",
-        "createdBy" : "Okoye"
+        "description": "Since Apollo caches all of your query results, it's important to get rid of them when the login state changes.",
+        "createdBy": "Okoye",
+        "creatorId": "b5818d3d-2d64-4b5e-b74e-1c09b12de401"
     },
     {
         "title": "Project zero",
-        "description" : "The easiest way to ensure that the UI and store state reflects the current user's permissions is to call client.resetStore() after your login or logout process has completed. This will cause the store to be cleared and all active queries to be refetched. If you just want the store to be cleared and don't want to refetch active queries, use client.clearStore() instead. Another option is to reload the page, which will have a similar effect.",
-        "createdBy" : "Precious"
+        "description": "The easiest way to ensure that the UI and store state reflects the current user's permissions is to call client.resetStore() after your login or logout process has completed. This will cause the store to be cleared and all active queries to be refetched. If you just want the store to be cleared and don't want to refetch active queries, use client.clearStore() instead. Another option is to reload the page, which will have a similar effect.",
+        "createdBy": "Precious",
+        "creatorId": "b5818d3d-2d64-4b5e-b74e-1c09b12de401"
     }
 ]
