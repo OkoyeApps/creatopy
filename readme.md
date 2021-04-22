@@ -1,4 +1,4 @@
-# Open Projecr
+# OP-Projects
 This is a simple application that show open projects that you can decide to join and then contribute to
 The project contains two applications
   - Server Application
