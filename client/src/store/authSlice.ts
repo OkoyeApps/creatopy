@@ -17,14 +17,20 @@ export const counterSlice = createSlice({
     reducers: {
         signInSuccess: (state, action : PayloadAction<LoginResponse>) => {
             state = action.payload;
+            return action.payload
         },
         registrationSuccess: (state, action : PayloadAction<LoginResponse>) => {
-
+            state = action.payload;
+            return action.payload
+        },
+        logout: (state, action) => {
+            state = initialState;
+            return state;
         }
     },
 });
 
 // Action creators are generated for each case reducer function
-export const { signInSuccess, registrationSuccess } = counterSlice.actions;
+export const { signInSuccess, registrationSuccess, logout } = counterSlice.actions;
 
 export default counterSlice.reducer;

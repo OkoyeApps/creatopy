@@ -97,7 +97,7 @@ form {
   bottom: 0;
   width: calc(100vw - 50%);
   padding-left: 120px;
-  height : 200px;
+  height: 200px;
 }
 
 form .field {
@@ -128,11 +128,11 @@ form input, form select {
   border-radius: 4px;
   cursor: pointer;
 }
-.btn_wrapper  { 
-  width : 100%;
-  text-align : right;
-}
 
+.btn_wrapper {
+  width: 100%;
+  text-align: right;
+}
 
 form button {
   color: #fff;
@@ -145,12 +145,33 @@ form button {
   position: absolute;
   bottom: 10px;
   left: 10px;
-  height : 100px;
-  width : 100px;
+  height: 100px;
+  width: 100px;
 }
 
 .txt_area_right {
-  padding-right : 24px !important;
+  padding-right: 24px !important;
+}
+
+.navbar {
+  padding: 20px 63px 20px 0px;
+  display: flex;
+  justify-content: flex-end
+}
+
+.avatar {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background: #AD1457;
+  display: cle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  cursor : pointer;
 }
 
 #book-details {
@@ -194,6 +215,16 @@ form button {
 .container {
   padding: 20px 40px;
   height: 100%;
+}
+
+.reset_container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 75px 179px;
 }
 
 .form-container {

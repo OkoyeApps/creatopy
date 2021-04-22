@@ -27,3 +27,11 @@ mutation Login($email: String!, $password : String){
     }
 }
 `;
+
+export const RESETPASSWORD = gql`
+mutation ResetPassword($oldPassword: String!, $newPassword : String!, $confirmPassword : String!){
+    resetPassword(oldPassword: $oldPassword, newPassword : $newPassword, confirmPassword : $confirmPassword)
+}
+`;
+
+

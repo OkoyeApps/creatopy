@@ -15,7 +15,7 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  let authState = store.getState();
+  let authState = store.getState() as any;
   let access_token = "";
   if (authState && authState.authentication && authState.authentication.access_token !== '') {
     access_token = authState.authentication.access_token;

@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { LoginType, RegistrationType } from '../types';
 import { REGISTER, LOGIN } from '../queries/auth.queries';
 import { useMutation } from '@apollo/client';
-import {signInSuccess,registrationSuccess} from '../store/authSlice';
-import {useAppDispatch} from '../store/store.hook';
+import { signInSuccess, registrationSuccess } from '../store/authSlice';
+import { useAppDispatch } from '../store/store.hook';
 
 const Modal = () => {
     const [registrationData, setRegistrationData] = useState<Record<string, string>>();
     const [loginData, setLoginData] = useState<Record<string, string>>();
-    const [register, ] = useMutation(REGISTER);
+    const [register,] = useMutation(REGISTER);
     const [login,] = useMutation(LOGIN);
     const dispatch = useAppDispatch();
 
@@ -50,28 +50,35 @@ const Modal = () => {
                 }
             }
         } catch (error) {
-            alert("registration failed")
+            alert("registration failed");
             console.log(error);
         }
 
     };
     const loginHandler = async () => {
-        let dataToPost = loginData as Object;
-        if (!dataToPost || !dataToPost.hasOwnProperty("email") || !dataToPost.hasOwnProperty("password")) {
-            return alert("please all fields are required");
-        }
-        else {
-            let postData = dataToPost as LoginType;
-            let result = await login({
-                variables: {
-                    email: postData.email,
-                    password: postData.password
-                }
-            });
-            if (result && result.data && result.data.login) {
-                localStorage.setItem("auth_detail", JSON.stringify(result.data.login));
-                dispatch(signInSuccess(result.data.login));
+        try {
+
+            let dataToPost = loginData as Object;
+            if (!dataToPost || !dataToPost.hasOwnProperty("email") || !dataToPost.hasOwnProperty("password")) {
+                return alert("please all fields are required");
             }
+            else {
+                let postData = dataToPost as LoginType;
+                let result = await login({
+                    variables: {
+                        email: postData.email,
+                        password: postData.password
+                    }
+                });
+                if (result && result.data && result.data.login) {
+                    localStorage.setItem("auth_detail", JSON.stringify(result.data.login));
+                    dispatch(signInSuccess(result.data.login));
+                }else{
+                    alert("could not authenticate, make sure your credentials are right")
+                }
+            }
+        } catch (error) {
+            alert("could not authenticate, make sure your credentials are right")
         }
     };
 
