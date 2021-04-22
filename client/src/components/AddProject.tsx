@@ -28,6 +28,10 @@ const AddProject = () => {
                         description: postData.description
                     }
                 });
+                setFormValues({
+                    title : "",
+                    description : ""
+                })
             }
         } catch (error) {
             alert("registration failed");
@@ -39,11 +43,11 @@ const AddProject = () => {
             <div>
                 <div>
                     <label>Title:</label>
-                    <input name="title" type="text" className="form-control" onChange={handleChange} />
+                    <input name="title" type="text"value={formValues?.title} className="form-control" onChange={handleChange} />
                 </div>
                 <div className="txt_area_right">
                     <label>Description:</label>
-                    <textarea name="description" className="form-control" rows={3} cols={3} onChange={handleChange}></textarea>
+                    <textarea name="description" value={formValues?.description} className="form-control" rows={3} cols={3} onChange={handleChange}></textarea>
 
                 </div>
             </div>
