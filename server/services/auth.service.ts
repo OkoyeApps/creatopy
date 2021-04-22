@@ -47,12 +47,13 @@ class AuthServices {
     }
 
     async resetPassword(data : ResetPasswordDto ){
-        if(data.newPassword !== data.confirmPassword) return false;
+        console.log(data)
+        if(data.newPassword !== data.confirmPassword) throw new Error("password does not match");
         let existingUser = await db.User.findByPk(data.userId);
-        if(!existingUser) return false;
+        if(!existingUser)  throw new Error("user not found");
         if(existingUser){
             let validPassword = await cryptoUtil.verifyHash(data.oldPassword, existingUser.password);
-            if (!validPassword) return false;
+            if (!validPassword)  throw new Error("password mis-match");
             
             existingUser.password  = await cryptoUtil.createStringHash(data.newPassword);
             existingUser.save();

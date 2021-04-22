@@ -46,7 +46,7 @@ const Mutation = new GraphQLObjectType({
                     title: args.title,
                     description: args.description,
                     createdBy: context.locals.auth.firstName + " " + context.locals.auth.lastName,
-                    creatorId : context.locals.auth.id
+                    creatorId: context.locals.auth.id
                 });
             }
         },
@@ -68,11 +68,12 @@ const Mutation = new GraphQLObjectType({
                 confirmPassword: { type: new GraphQLNonNull(GraphQLString) },
             },
             async resolve(parent, args, context) {
+                if (!context.locals || !context.locals.auth || !context.locals.auth.id) return null;
                 return await authServices.resetPassword({
                     oldPassword: args.oldPassword,
                     newPassword: args.newPassword,
                     confirmPassword: args.confirmPassword,
-                    userId: context.locals.userId
+                    userId: context.locals.auth.id
                 });
             }
         }
